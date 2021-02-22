@@ -1,0 +1,26 @@
+body {
+  height: 100vh;
+  background-color: #B7E8E2;
+}
+
+form {
+  overflow-x: auto;
+}
+
+fieldset {
+  background-color: lightgrey;
+  min-width: 160px;
+  width: 180px;
+}
+
+legend, h4 {
+  font-size: 34px;
+  font-family: Damion, cursive
+}
+
+legend {
+  background-color: white;
+  border: 1px solid black;
+  height: 50px;
+  width: 100px;
+}
