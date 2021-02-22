@@ -1,0 +1,28 @@
+{
+  "name": "mhfu-kitchen-helper",
+  "version": "0.1.0",
+  "description": "KPWorthi personal project, MHFU Felyne Kitchen Helper",
+  "main": "server.js",
+  "scripts": {
+    "babel": "babel src -d public",
+    "sass": "sass src:public",
+    "build": "npm run babel && npm run sass",
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.3",
+    "nodemon": "^2.0.2"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.12.17",
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "@babel/register": "^7.12.1"
+  }
+}
