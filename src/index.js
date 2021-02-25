@@ -1,47 +1,47 @@
-const meats = ["Meat Scraps", "Rubbery Jerky", "Tough Meat", 
-             "Cubesteak", "Spicy Sausage", "Wild Bacon", 
-             "Great Mutton", "Juicy Rib Roast", "Meatwagon",
-             "Dragon Foot", "Gator Ribmeat", "Princess Pork", 
-             "Bigmeat", "Dragon Head", "Dragon Tail", "King Turkey"];
+const meats = [["Meat Scraps", "Rubbery Jerky", "Tough Meat"], 
+             ["Cubesteak", "Spicy Sausage", "Wild Bacon"], 
+             ["Great Mutton", "Juicy Rib Roast", "Meatwagon"],
+             ["Dragon Foot", "Gator Ribmeat", "Princess Pork"], 
+             ["Bigmeat", "Dragon Head", "Dragon Tail", "King Turkey"]];
 
-const brans   = [ "Chunky Rice", "Furahiya Wheat", "Mixed Beans",
-                  "Hardtack", "Snowy Rice",
-                  "Kut Beans", "Tasty Rice", "Warwheat",
-                  "Ancient Beans", "Kokoto Rice", "Megabagel",
-                  "Gold Rice", "Heaven Bread", "Soul Beans"
+const brans   = [ ["Chunky Rice", "Furahiya Wheat", "Mixed Beans"],
+                  ["Hardtack", "Snowy Rice"],
+                  ["Kut Beans", "Tasty Rice", "Warwheat"],
+                  ["Ancient Beans", "Kokoto Rice", "Megabagel"],
+                  ["Gold Rice", "Heaven Bread", "Soul Beans"]
                 ];
 
-const fishies = [ "Bone Taco", "Clamchip", "Scalefish",
-                  "Snake Salmon", "Tuna Head",
-                  "Curved Shrimp", "Horseshoe Crab", "Spiky Blowfish",
-                  "King Squid", "Queen Shrimp", "Pink Caviar",
-                  "1,000 Year Crab", "Crimson Seabream", "Hairy Tuna"
+const fishies = [ ["Bone Taco", "Clamchip", "Scalefish"],
+                  ["Snake Salmon", "Tuna Head"],
+                  ["Curved Shrimp", "Horseshoe Crab", "Spiky Blowfish"],
+                  ["King Squid", "Queen Shrimp", "Pink Caviar"],
+                  ["1,000 Year Crab", "Crimson Seabream", "Hairy Tuna"]
                 ];
 
-const fruits  = [ "Oily Raisins",
-                  "Fruity Jam", "Northern Orange",
-                  "Frozen Apples",
-                  "Burning Mango", "Lifejam",
-                  "Emerald Durian"
+const fruits  = [ ["Oily Raisins"],
+                  ["Fruity Jam", "Northern Orange"],
+                  ["Frozen Apples"],
+                  ["Burning Mango", "Lifejam"],
+                  ["Emerald Durian"]
                 ];
 
-const veggie  = [ "Jungle Onion", "Pumpkin", "Twinshroom",
-                  "Mild Herb", "Sliced Cactus", "Spotted Onion", "Young Potato",
-                  "Cudgel Onion", "Spicy Carrots", "Western Parsley",
-                  "Cannon Lettuce", "Rare Onion", "Scented Celery",
-                  "Demonshroom", "Fatty Tomato", "King Truffle" 
+const veggie  = [ ["Jungle Onion", "Pumpkin", "Twinshroom"],
+                  ["Mild Herb", "Sliced Cactus", "Spotted Onion", "Young Potato"],
+                  ["Cudgel Onion", "Spicy Carrots", "Western Parsley"],
+                  ["Cannon Lettuce", "Rare Onion", "Scented Celery"],
+                  ["Demonshroom", "Fatty Tomato", "King Truffle"] 
 ];
-const dairy   = [ "Powdered Cheese", "Sticky Cream",
-                  "Aged Cheese", "Carefree Yogurt",
-                  "Buffalo Butter", "Chili Cheese",
-                  "Royale Cheese",
-                  "Kirin Cheese" 
+const dairy   = [ ["Powdered Cheese", "Sticky Cream"],
+                  ["Aged Cheese", "Carefree Yogurt"],
+                  ["Buffalo Butter", "Chili Cheese"],
+                  ["Royale Cheese"],
+                  ["Kirin Cheese"] 
 ];
-const drink   = [ "Hopi",
-                  "Furahiya Cola",
-                  "Panish",
-                  "Blessed Wine",
-                  "Goldenfish Brew" 
+const drink   = [ ["Hopi"],
+                  ["Furahiya Cola"],
+                  ["Panish"],
+                  ["Blessed Wine"],
+                  ["Goldenfish Brew"] 
 ];
 
 const recipes = { 
@@ -203,13 +203,13 @@ class Main extends React.Component {
     title[0].toUpperCase();
     title.join('');
     switch (type) {
-      case 'meat': list = meats; break;
-      case 'bran': list = brans; break;
-      case 'fish': list = fishies; break;
-      case 'fruit': list = fruits; break;
-      case 'veggie': list = veggie; break;
-      case 'dairy': list = dairy; break;
-      case 'drink': list = drink; break;
+      case 'meat': list = meats[this.state.currentChefs-1]; break;
+      case 'bran': list = brans[this.state.currentChefs-1]; break;
+      case 'fish': list = fishies[this.state.currentChefs-1]; break;
+      case 'fruit': list = fruits[this.state.currentChefs-1]; break;
+      case 'veggie': list = veggie[this.state.currentChefs-1]; break;
+      case 'dairy': list = dairy[this.state.currentChefs-1]; break;
+      case 'drink': list = drink[this.state.currentChefs-1]; break;
     }
     return (
       <fieldset id={`${type}-list`} class="d-flex flex-column border border-dark mx-xl-5 mx-sm-3 px-1" onInput={this.selectHandler}>
@@ -271,6 +271,14 @@ class Main extends React.Component {
           {this.fillOptions("drink")}
         </form>
         <div id="bottom-half" class="row justify-content-around mx-1 mt-4">
+          <div id="chef-select" class="border border-dark col-sm-4">
+              <h4>Chef Selector</h4>
+              <button type="button" id="chef-1-btn" class="btn btn-dark m-1 active" onClick={this.buttonHandler}>1 Chef</button>
+              <button type="button" id="chef-2-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>2 Chefs</button>
+              <button type="button" id="chef-3-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>3 Chefs</button>
+              <button type="button" id="chef-4-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>4 Chefs</button>
+              <button type="button" id="chef-5-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>5 Chefs</button>
+          </div>
           <div id="ingredient-list" class="border border-dark col-sm-4">
               <h4>Ingredient List</h4>
               <p>Meat: {this.state.currentIngredients['meat'].join(', ')}</p>
@@ -280,14 +288,6 @@ class Main extends React.Component {
               <p>Veggie: {this.state.currentIngredients['veggie'].join(', ')}</p>
               <p>Dairy: {this.state.currentIngredients['dairy'].join(', ')}</p>
               <p>Drink: {this.state.currentIngredients['drink'].join(', ')}</p>
-          </div>
-          <div id="chef-select" class="border border-dark col-sm-4">
-              <h4>Chef Selector</h4>
-              <button type="button" id="chef-1-btn" class="btn btn-dark m-1 active" onClick={this.buttonHandler}>1 Chef</button>
-              <button type="button" id="chef-2-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>2 Chefs</button>
-              <button type="button" id="chef-3-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>3 Chefs</button>
-              <button type="button" id="chef-4-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>4 Chefs</button>
-              <button type="button" id="chef-5-btn" class="btn btn-dark m-1" onClick={this.buttonHandler}>5 Chefs</button>
           </div>
           <div id="recipe-list" class="flex-column col-sm-4 border border-dark">
               <h4>Your recipes ...</h4>

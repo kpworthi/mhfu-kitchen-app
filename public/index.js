@@ -1,10 +1,10 @@
-const meats = ["Meat Scraps", "Rubbery Jerky", "Tough Meat", "Cubesteak", "Spicy Sausage", "Wild Bacon", "Great Mutton", "Juicy Rib Roast", "Meatwagon", "Dragon Foot", "Gator Ribmeat", "Princess Pork", "Bigmeat", "Dragon Head", "Dragon Tail", "King Turkey"];
-const brans = ["Chunky Rice", "Furahiya Wheat", "Mixed Beans", "Hardtack", "Snowy Rice", "Kut Beans", "Tasty Rice", "Warwheat", "Ancient Beans", "Kokoto Rice", "Megabagel", "Gold Rice", "Heaven Bread", "Soul Beans"];
-const fishies = ["Bone Taco", "Clamchip", "Scalefish", "Snake Salmon", "Tuna Head", "Curved Shrimp", "Horseshoe Crab", "Spiky Blowfish", "King Squid", "Queen Shrimp", "Pink Caviar", "1,000 Year Crab", "Crimson Seabream", "Hairy Tuna"];
-const fruits = ["Oily Raisins", "Fruity Jam", "Northern Orange", "Frozen Apples", "Burning Mango", "Lifejam", "Emerald Durian"];
-const veggie = ["Jungle Onion", "Pumpkin", "Twinshroom", "Mild Herb", "Sliced Cactus", "Spotted Onion", "Young Potato", "Cudgel Onion", "Spicy Carrots", "Western Parsley", "Cannon Lettuce", "Rare Onion", "Scented Celery", "Demonshroom", "Fatty Tomato", "King Truffle"];
-const dairy = ["Powdered Cheese", "Sticky Cream", "Aged Cheese", "Carefree Yogurt", "Buffalo Butter", "Chili Cheese", "Royale Cheese", "Kirin Cheese"];
-const drink = ["Hopi", "Furahiya Cola", "Panish", "Blessed Wine", "Goldenfish Brew"];
+const meats = [["Meat Scraps", "Rubbery Jerky", "Tough Meat"], ["Cubesteak", "Spicy Sausage", "Wild Bacon"], ["Great Mutton", "Juicy Rib Roast", "Meatwagon"], ["Dragon Foot", "Gator Ribmeat", "Princess Pork"], ["Bigmeat", "Dragon Head", "Dragon Tail", "King Turkey"]];
+const brans = [["Chunky Rice", "Furahiya Wheat", "Mixed Beans"], ["Hardtack", "Snowy Rice"], ["Kut Beans", "Tasty Rice", "Warwheat"], ["Ancient Beans", "Kokoto Rice", "Megabagel"], ["Gold Rice", "Heaven Bread", "Soul Beans"]];
+const fishies = [["Bone Taco", "Clamchip", "Scalefish"], ["Snake Salmon", "Tuna Head"], ["Curved Shrimp", "Horseshoe Crab", "Spiky Blowfish"], ["King Squid", "Queen Shrimp", "Pink Caviar"], ["1,000 Year Crab", "Crimson Seabream", "Hairy Tuna"]];
+const fruits = [["Oily Raisins"], ["Fruity Jam", "Northern Orange"], ["Frozen Apples"], ["Burning Mango", "Lifejam"], ["Emerald Durian"]];
+const veggie = [["Jungle Onion", "Pumpkin", "Twinshroom"], ["Mild Herb", "Sliced Cactus", "Spotted Onion", "Young Potato"], ["Cudgel Onion", "Spicy Carrots", "Western Parsley"], ["Cannon Lettuce", "Rare Onion", "Scented Celery"], ["Demonshroom", "Fatty Tomato", "King Truffle"]];
+const dairy = [["Powdered Cheese", "Sticky Cream"], ["Aged Cheese", "Carefree Yogurt"], ["Buffalo Butter", "Chili Cheese"], ["Royale Cheese"], ["Kirin Cheese"]];
+const drink = [["Hopi"], ["Furahiya Cola"], ["Panish"], ["Blessed Wine"], ["Goldenfish Brew"]];
 const recipes = {
   oneChef: [["meat", "meat", "+10 Health"], ["meat", "bran", "+10 Health"], ["meat", "veggie", "+25 Stamina"], ["meat", "drink", "Attack Up Small"], ["bran", "bran", "+25 Stamina"], ["bran", "fish", "+10 Health"], ["bran", "fruit", "Ice Res +3"], ["fish", "fish", "Attack Up Small"], ["fish", "veggie", "+25 Stamina"], ["fish", "drink", "+10 Defense"], ["fruit", "veggie", "+20 Health"], ["fruit", "dairy", "+25 Stamina"], ["veggie", "veggie", "+10 Defense"]],
   twoChef: [["meat", "meat", "+20 Health"], ["meat", "bran", "+15 Defense "], ["meat", "fruit", "Fire Res +3 "], ["meat", "drink", "+10 Health "], ["bran", "bran", "+25 Stamina "], ["bran", "fish", "+20 Health "], ["bran", "veggie", "Attack Up Small "], ["bran", "drink", "+10 Health & Thndr Res +3 "], ["fish", "fish", "Attack Up Small "], ["fish", "drink", "+25 Stamina "], ["fruit", "veggie", "+10 Defense & +10 Health "], ["fruit", "dairy", "Water Res +3 "], ["veggie", "veggie", "+10 Defense "], ["veggie", "drink", "+25 Stamina "], ["dairy", "dairy", "+25 Stamina & Attack Up Small "], ["dairy", "drink", "Ice Res +3 "]],
@@ -95,31 +95,31 @@ class Main extends React.Component {
 
     switch (type) {
       case 'meat':
-        list = meats;
+        list = meats[this.state.currentChefs - 1];
         break;
 
       case 'bran':
-        list = brans;
+        list = brans[this.state.currentChefs - 1];
         break;
 
       case 'fish':
-        list = fishies;
+        list = fishies[this.state.currentChefs - 1];
         break;
 
       case 'fruit':
-        list = fruits;
+        list = fruits[this.state.currentChefs - 1];
         break;
 
       case 'veggie':
-        list = veggie;
+        list = veggie[this.state.currentChefs - 1];
         break;
 
       case 'dairy':
-        list = dairy;
+        list = dairy[this.state.currentChefs - 1];
         break;
 
       case 'drink':
-        list = drink;
+        list = drink[this.state.currentChefs - 1];
         break;
     }
 
@@ -184,9 +184,6 @@ class Main extends React.Component {
       id: "bottom-half",
       class: "row justify-content-around mx-1 mt-4"
     }, /*#__PURE__*/React.createElement("div", {
-      id: "ingredient-list",
-      class: "border border-dark col-sm-4"
-    }, /*#__PURE__*/React.createElement("h4", null, "Ingredient List"), /*#__PURE__*/React.createElement("p", null, "Meat: ", this.state.currentIngredients['meat'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Bran: ", this.state.currentIngredients['bran'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Fish: ", this.state.currentIngredients['fish'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Fruit: ", this.state.currentIngredients['fruit'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Veggie: ", this.state.currentIngredients['veggie'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Dairy: ", this.state.currentIngredients['dairy'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Drink: ", this.state.currentIngredients['drink'].join(', '))), /*#__PURE__*/React.createElement("div", {
       id: "chef-select",
       class: "border border-dark col-sm-4"
     }, /*#__PURE__*/React.createElement("h4", null, "Chef Selector"), /*#__PURE__*/React.createElement("button", {
@@ -215,6 +212,9 @@ class Main extends React.Component {
       class: "btn btn-dark m-1",
       onClick: this.buttonHandler
     }, "5 Chefs")), /*#__PURE__*/React.createElement("div", {
+      id: "ingredient-list",
+      class: "border border-dark col-sm-4"
+    }, /*#__PURE__*/React.createElement("h4", null, "Ingredient List"), /*#__PURE__*/React.createElement("p", null, "Meat: ", this.state.currentIngredients['meat'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Bran: ", this.state.currentIngredients['bran'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Fish: ", this.state.currentIngredients['fish'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Fruit: ", this.state.currentIngredients['fruit'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Veggie: ", this.state.currentIngredients['veggie'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Dairy: ", this.state.currentIngredients['dairy'].join(', ')), /*#__PURE__*/React.createElement("p", null, "Drink: ", this.state.currentIngredients['drink'].join(', '))), /*#__PURE__*/React.createElement("div", {
       id: "recipe-list",
       class: "flex-column col-sm-4 border border-dark"
     }, /*#__PURE__*/React.createElement("h4", null, "Your recipes ..."), this.findRecipes())));
