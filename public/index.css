@@ -1,17 +1,65 @@
-body {
-  height: 100vh;
-  background-color: #B7E8E2;
+@media (max-width: 767px) {
+  #title-bar p {
+    display: none;
+  }
+  .note {
+    background-color: rgb(183, 232, 226)!important;
+    border: 1px solid #dee2e6!important;
+    border-radius: 0.25rem!important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  }
 }
 
-form {
-  overflow-x: auto;
+body {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: rgb(183, 232, 226);
+  background-image: linear-gradient(rgba(183, 232, 226, 0.95), rgba(183, 232, 226, 0.95)),
+                    url('./bg/food-bg2.jpg')
 }
+
+form, body {
+  scrollbar-width: thin;
+  scrollbar-color: steelblue #92b6d5;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #92b6d5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: steelblue;
+  border-radius: 20px;
+  border: 3px solid #92b6d5;
+}
+
+#title-bar{
+  height: 100px;
+  margin-top: 10px;
+  background-color: lightcyan;
+}
+
+#title-bar h1{ font-family: 'Reggae One', cursive; }
+
+#title-bar p { font-style: italic; }
+
+article { font-weight: bold; }
+
+form { overflow-x: auto; }
 
 fieldset {
   background-color: lightgrey;
   min-width: 160px;
   width: 180px;
+  height: 200px;
 }
+
+fieldset input { margin-right: 0.5rem; }
 
 legend, h4 {
   font-size: 34px;
@@ -23,4 +71,14 @@ legend {
   border: 1px solid black;
   height: 50px;
   width: 100px;
+}
+
+section {
+  padding: 1rem;
+}
+
+.note {
+  background-color: rgb(183, 232, 226);
+  border-radius: 0.40rem;
+  box-shadow: 0 .5rem 1rem rgb(183, 232, 226, .15);
 }
