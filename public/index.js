@@ -1,5 +1,6 @@
 import allIngredients from '../public/allIngredients.js';
 import recipes from '../public/recipes.js';
+import NavBar from './navbar.js';
 
 const Ingredients = ({
   currentIngredients
@@ -85,6 +86,9 @@ class Main extends React.Component {
   constructor() {
     super();
     this.state = {
+      appTitle: "kitchen",
+      subTitle: "recipes",
+      tagLine: "Looks tasty!",
       currentIngredients: {
         meat: [],
         bran: [],
@@ -96,6 +100,11 @@ class Main extends React.Component {
       },
       currentChefs: 1
     };
+
+    this.changeState = stateObj => {
+      this.setState(stateObj);
+    };
+
     this.buttonHandler = this.buttonHandler.bind(this);
     this.checkHandler = this.checkHandler.bind(this);
   }
@@ -166,12 +175,12 @@ class Main extends React.Component {
     return /*#__PURE__*/React.createElement("div", {
       id: "app-wrapper",
       class: "container-fluid"
-    }, /*#__PURE__*/React.createElement("div", {
-      id: "title-bar",
-      class: "border border-dark text-center"
-    }, /*#__PURE__*/React.createElement("h1", null, "MHFU Kitchen Helper"), /*#__PURE__*/React.createElement("p", {
-      class: "h3"
-    }, "Looks tasty!")), /*#__PURE__*/React.createElement("article", {
+    }, /*#__PURE__*/React.createElement(NavBar, {
+      title: this.state.appTitle,
+      subTitle: this.state.subTitle,
+      tagLine: this.state.tagLine,
+      changeState: this.changeState
+    }), /*#__PURE__*/React.createElement("article", {
       id: "intro",
       class: "my-3 text-center"
     }, /*#__PURE__*/React.createElement("p", null, "Welcome to the MHFU Kitchen Helper, where getting you the food you want ( or at least can tolerate ) fast is our goal!"), /*#__PURE__*/React.createElement("p", null, "Getting started is easy! Just select your current number of felyne chefs, click on the ingredients you have available to you, and we\u2019ll show you what does what!")), /*#__PURE__*/React.createElement("div", {

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "babel": "babel src -d public",
+    "babelwatch": "babel src --watch -d public",
     "sass": "sass src:public",
     "build": "npm run babel && npm run sass",
     "start": "nodemon server.js"

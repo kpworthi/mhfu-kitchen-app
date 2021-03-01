@@ -1,5 +1,6 @@
 import allIngredients from '../public/allIngredients.js'
 import recipes from '../public/recipes.js'
+import NavBar from './navbar.js'
 
 const Ingredients = ({ currentIngredients }) => {
   return (
@@ -68,9 +69,15 @@ class Main extends React.Component {
   constructor() {
     super();
 
-    this.state = { currentIngredients: {meat: [], bran: [], fish: [], fruit: [], veggie: [], dairy: [], drink: []},
+    this.state = { 
+                   appTitle: "kitchen",
+                   subTitle: "recipes",
+                   tagLine: "Looks tasty!",
+                   currentIngredients: {meat: [], bran: [], fish: [], fruit: [], veggie: [], dairy: [], drink: []},
                    currentChefs: 1 
                  };
+
+    this.changeState = ( stateObj ) => { this.setState(stateObj) }
 
     this.buttonHandler = this.buttonHandler.bind(this);
     this.checkHandler = this.checkHandler.bind(this);
@@ -131,10 +138,7 @@ class Main extends React.Component {
     let currentIngredients = this.state.currentIngredients;
     return(
       <div id="app-wrapper" class="container-fluid">
-        <div id="title-bar" class="border border-dark text-center">
-          <h1>MHFU Kitchen Helper</h1>
-          <p class="h3">Looks tasty!</p>
-        </div>
+        <NavBar title={this.state.appTitle} subTitle={this.state.subTitle} tagLine={this.state.tagLine} changeState={this.changeState}/>
         <article id="intro" class="my-3 text-center">
           <p>Welcome to the MHFU Kitchen Helper, where getting you the food you want ( or at least can tolerate ) fast is our goal!</p>
           <p>Getting started is easy! Just select your current number of felyne chefs, click on the ingredients you have available to you, and we’ll show you what does what!</p>

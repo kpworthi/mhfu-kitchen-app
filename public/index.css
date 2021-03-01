@@ -1,7 +1,6 @@
 @media (max-width: 767px) {
-  #title-bar p {
-    display: none;
-  }
+  .tag-line { display: none }
+  #title-bar p { display: none; }
   .note {
     background-color: rgb(183, 232, 226)!important;
     border: 1px solid #dee2e6!important;
@@ -38,15 +37,72 @@ form, body {
   border: 3px solid #92b6d5;
 }
 
-#title-bar{
-  height: 100px;
+/* NavBar styles */
+#nav-bar{
   margin-top: 10px;
   background-color: lightcyan;
 }
 
-#title-bar h1{ font-family: 'Reggae One', cursive; }
+.dropdown-wrapper {
+  position: relative;
+  user-select: none;
+}
 
-#title-bar p { font-style: italic; }
+.nav-drop { 
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-curr { 
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #3b3b3b;
+  height: 1.2em;
+  line-height: 1.2em;
+  background: lightcyan;
+  cursor: pointer;
+}
+
+.dropdown-opt-list {
+  position: absolute;
+  display: none;
+  width: max-content;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 2px solid #394a6d;
+  border-top: 0;
+  background-color: lightcyan;
+  pointer-events: none;
+  z-index: 2;
+}
+.dropdown-curr:focus { background-color: white; }
+.dropdown-curr:hover { background-color: white; }
+.dropdown-opt {
+  position: relative;
+  display: block;
+  font-size: 2rem;
+  padding: 0 20px;
+  color: #3b3b3b;
+  background-color: lightcyan;
+  line-height: 2.5rem;
+  cursor: pointer;
+}
+.dropdown-opt:focus { background-color: white; }
+.dropdown-opt:hover { background-color: white; }
+.drop-show { display: block; pointer-events: all; }
+
+.tag-line {
+  font-style: italic;
+}
+
+.title {
+  font-family: 'Reggae One', cursive;
+}
+/* End NavBar Styles */
 
 article { font-weight: bold; }
 
