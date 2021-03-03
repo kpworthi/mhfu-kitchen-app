@@ -1,6 +1,6 @@
 const NavBar = ({ title, subTitle, tagLine, changeState }) => {
-  let apps = { weapons: { title: "Weapons", location: "http://localhost:8080", subs: ["Sword and Shield", "Dual Swords"]},
-               kitchen: { title: "Kitchen", location: "http://localhost:8081", subs: ["Recipes", "Skills"]}}
+  let apps = { weapons: { title: "Weapons", location: "https://trees.nyralen.com", subs: ["Sword and Shield", "Dual Swords"]},
+               kitchen: { title: "Kitchen", location: "https://kitchen.nyralen.com", subs: ["Recipes", "Skills"]}}
 
   let clickHandler = ( event ) => {
     if ( event.target.className === 'dropdown-title') event.currentTarget.querySelector('.dropdown-opt-list').classList.add('drop-show');
