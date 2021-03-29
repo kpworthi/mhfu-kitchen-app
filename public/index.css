@@ -9,6 +9,21 @@
   }
 }
 
+/* root font size settings */
+:root {
+  font-size: 16px;
+}
+@media (max-width: 400px) {
+  :root {
+    font-size: 12px!important;
+  }
+}
+@media (min-width: 401px) and (max-width: 767px) {
+  :root {
+    font-size: 14px!important;
+  }
+}
+
 body {
   height: 100vh;
   overflow-y: auto;
@@ -38,9 +53,11 @@ form, body {
 }
 
 /* NavBar styles */
+
 #nav-bar{
   margin-top: 10px;
   background-color: lightcyan;
+  border: 1px solid #343a40;
 }
 
 .dropdown-wrapper {
@@ -52,6 +69,23 @@ form, body {
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+#app-dropdown { min-width: 250px; }
+#sub-dropdown { min-width: 405px; }
+@media (max-width: 400px) {
+  #sub-dropdown, #app-dropdown {
+    min-width: 90vw!important;
+  }
+}
+@media (min-width: 401px) and (max-width: 767px) {
+  #sub-dropdown{ min-width: 360px; }
+}
+
+@media (max-width: 767px) {
+  .tag-line {
+    display: none;
+  }
 }
 
 .dropdown-curr { 
@@ -69,7 +103,8 @@ form, body {
 .dropdown-opt-list {
   position: absolute;
   display: none;
-  width: max-content;
+  max-height: calc(100vh - 125px);
+  overflow-y: auto;
   top: 100%;
   left: 0;
   right: 0;
@@ -84,7 +119,7 @@ form, body {
 .dropdown-opt {
   position: relative;
   display: block;
-  font-size: 2rem;
+  font-size: 2rem!important;
   padding: 0 20px;
   color: #3b3b3b;
   background-color: lightcyan;
@@ -137,4 +172,22 @@ section {
   background-color: rgb(183, 232, 226);
   border-radius: 0.40rem;
   box-shadow: 0 .5rem 1rem rgb(183, 232, 226, .15);
+}
+
+/* skill list specific settings */
+
+.card-header > svg {
+  cursor: pointer;
+}
+
+.card-header > svg > path {
+  pointer-events: none;
+}
+
+.card-body > p {
+  display: none;
+}
+
+.card-body > .show {
+  display: block;
 }
