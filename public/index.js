@@ -25,29 +25,13 @@ const Recipes = ({
   ingredients,
   chefs
 }) => {
-  let currentRecipes = [];
-
-  switch (chefs) {
-    case 1:
-      currentRecipes = recipes.oneChef;
-      break;
-
-    case 2:
-      currentRecipes = recipes.twoChef;
-      break;
-
-    case 3:
-      currentRecipes = recipes.threeChef;
-      break;
-
-    case 4:
-      currentRecipes = recipes.fourChef;
-      break;
-
-    case 5:
-      currentRecipes = recipes.fiveChef;
-      break;
-  }
+  const currentRecipes = recipes[{
+    1: "oneChef",
+    2: "twoChef",
+    3: "threeChef",
+    4: "fourChef",
+    5: "fiveChef"
+  }[chefs]]; // find recipes that match the currently selected ingredients
 
   let validRecipes = [];
   currentRecipes.forEach(recipe => {
@@ -60,17 +44,15 @@ const Recipes = ({
   if (validRecipes.length === 0) validRecipes = /*#__PURE__*/React.createElement("p", {
     class: "col-xl-4"
   }, "No valid recipes!");else {
-    // map ingredient names to each recipe, sort by benefit and then map jsx to the array
-    validRecipes = validRecipes.map(recipe => {
-      let dblFlag = recipe[0] === recipe[1];
-      return [ingredients[recipe[0]][0], ingredients[recipe[1]][dblFlag ? 1 : 0], recipe[2]];
-    }).sort((a, b) => {
+    // sort by benefit, add ingredient names, then map jsx to the array
+    validRecipes = validRecipes.sort((a, b) => {
       if (a[2].toUpperCase() > b[2].toUpperCase()) return 1;
       if (a[2].toUpperCase() < b[2].toUpperCase()) return -1;else return 0;
-    }).map(value => {
+    }).map(recipe => {
+      let dblFlag = recipe[0] === recipe[1];
       return /*#__PURE__*/React.createElement("p", {
         class: "col-xl-4 note"
-      }, /*#__PURE__*/React.createElement("b", null, value[2], ":"), " ", value[0], " + ", value[1]);
+      }, /*#__PURE__*/React.createElement("b", null, recipe[2], ":"), " ", ingredients[recipe[0]][0], " + ", ingredients[recipe[1]][dblFlag ? 1 : 0]);
     });
   }
   return /*#__PURE__*/React.createElement("section", {
@@ -83,20 +65,24 @@ const Recipes = ({
 };
 
 function RecipesView() {
+  const emptyIngredientList = () => {
+    return {
+      meat: [],
+      bran: [],
+      fish: [],
+      fruit: [],
+      veggie: [],
+      dairy: [],
+      drink: []
+    };
+  };
+
   const [currentChefs, setCurrentChefs] = React.useState(1);
-  const [currentIngredients, setCurrentIngredients] = React.useState({
-    meat: [],
-    bran: [],
-    fish: [],
-    fruit: [],
-    veggie: [],
-    dairy: [],
-    drink: []
-  });
+  const [currentIngredients, setCurrentIngredients] = React.useState(emptyIngredientList());
 
   const chefSelectHandler = event => {
-    // when choosing chef count, change active button
-    if (event.target.nodeName === "BUTTON") {
+    // when choosing new chef count, change active button and empty ingredients list
+    if (event.target.nodeName === "BUTTON" && Number(event.target.textContent[0]) !== currentChefs) {
       document.querySelector(".active").classList.remove("active");
       event.target.classList.add("active"); // next, uncheck all boxes, and empty ingredients list
 
@@ -104,15 +90,7 @@ function RecipesView() {
         checkbox.checked = false;
       });
       setCurrentChefs(Number(event.target.textContent[0]));
-      setCurrentIngredients({
-        meat: [],
-        bran: [],
-        fish: [],
-        fruit: [],
-        veggie: [],
-        dairy: [],
-        drink: []
-      });
+      setCurrentIngredients(emptyIngredientList());
     }
   };
 
@@ -139,7 +117,7 @@ function RecipesView() {
       onInput: checkHandler
     }, /*#__PURE__*/React.createElement("legend", {
       class: "text-center"
-    }, title), list.map((item, ind) => {
+    }, title), list.map(item => {
       let itemId = item.split(" ").join("-").toLowerCase();
       return /*#__PURE__*/React.createElement("label", {
         for: itemId
