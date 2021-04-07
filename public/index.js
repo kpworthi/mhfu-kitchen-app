@@ -176,6 +176,8 @@ function RecipesView() {
 
 function SkillsView({}) {
   const [skillCardList, setSkillCardList] = React.useState([]); // only handles clicking on a card's svg element
+  // clicking on a skill's book icon will hide the description, show the article, and fill in the icon
+  // clicking on it again will reverse this
 
   const clickHandler = event => {
     if (event.target.nodeName === "svg") {
@@ -187,6 +189,23 @@ function SkillsView({}) {
       clickedArticle.classList.toggle('show');
       clickedFill.value = clickedFill.value === "none" ? "currentColor" : "none";
     }
+  }; // Handle submitting the search / filter parameters
+  // Clear the skillCardList, emptying the displayed list and showing the loading message while the
+  // fetch is being performed. Also clear the search fields.
+
+
+  const submitHandler = event => {
+    event.preventDefault();
+    const searchTypeField = document.getElementById('inlineFormType');
+    const searchValueField = document.getElementById('inlineFormValue');
+    const searchObj = {
+      type: searchTypeField.value,
+      value: searchValueField.value
+    };
+    searchTypeField.value = 'name';
+    searchValueField.value = '';
+    setSkillCardList([/*#__PURE__*/React.createElement("p", null, "Loading list...")]);
+    getSkills(searchObj);
   }; // returns a JSX div containing a bootstrap card with the skill information in it
   // expects: a skillArray in the format ['skill name', 'skill description', 'skill article']
 
@@ -223,22 +242,43 @@ function SkillsView({}) {
       id: `${skillName}-article`,
       class: "card-text card-article"
     }, skillArticle)));
-  };
+  }; // Fetch the skills from the db
+  // If the search function was used, format the fields into a query to append to the api path.
+  // If no search was specified, the 'query' param will be empty and all listed skills will be retrieved.
+  // Once the data is received, update the skillCardList state, which will cause a re-render.
 
-  let skillFetchResults = {};
+
+  const getSkills = query => {
+    let queryFull = '';
+
+    if (query) {
+      queryFull = `?type=${query.type}&value=${query.value}`;
+    }
+
+    try {
+      let skillFetchResults = fetch(`/api${queryFull}`).then(response => response.json()).then(responseJSON => {
+        const body = responseJSON;
+        let fullCardList = [];
+
+        for (let skill of body) {
+          fullCardList.push(skillCard(skill));
+        }
+
+        if (fullCardList.length === 0) {
+          setSkillCardList([/*#__PURE__*/React.createElement("p", null, "No skills match your search criteria.")]);
+        } else {
+          setSkillCardList(fullCardList);
+        }
+      });
+    } catch {
+      console.log('There was an issue during skill retrieval.');
+    }
+  }; // Check to see if the skillCardList is empty, which would be on the initial render.
+  // If this is the initial render, get all the skills to display.
+
 
   if (skillCardList.length === 0) {
-    skillFetchResults = fetch('../public/skills.json').then(response => response.json()).then(responseJSON => {
-      console.log(responseJSON);
-      const body = responseJSON;
-      let fullCardList = [];
-
-      for (let skill of body) {
-        fullCardList.push(skillCard(skill));
-      }
-
-      setSkillCardList(fullCardList);
-    });
+    getSkills();
   }
 
   return /*#__PURE__*/React.createElement("div", {
@@ -246,11 +286,37 @@ function SkillsView({}) {
   }, /*#__PURE__*/React.createElement("article", {
     id: "intro",
     class: "my-3 text-center"
-  }, /*#__PURE__*/React.createElement("p", null, "Welcome to the MHFU Kitchen Helper Skills List! Need to find out what good your felyne's kitchen skills are? Look no further!"), /*#__PURE__*/React.createElement("p", null, "If you're looking for a little more context or some flavor, click on the book icon near the skill listing to see the info magazine's article entry for that skill (if available)!")), /*#__PURE__*/React.createElement("h4", null, "Skill List"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("p", null, "Welcome to the MHFU Kitchen Helper Skills List! Need to find out what good your felyne's kitchen skills are? Look no further!"), /*#__PURE__*/React.createElement("p", null, "If you're looking for a little more context or some flavor, click on the book icon near the skill listing to see the info magazine's article entry for that skill (if available)!")), /*#__PURE__*/React.createElement("h4", null, "Skill List"), /*#__PURE__*/React.createElement("form", {
+    class: "form-inline"
+  }, /*#__PURE__*/React.createElement("label", {
+    for: "inlineFormType"
+  }, "Search skills in their "), /*#__PURE__*/React.createElement("select", {
+    class: "form-control my-1 mx-2",
+    id: "inlineFormType"
+  }, /*#__PURE__*/React.createElement("option", {
+    selected: true,
+    value: "name"
+  }, "name"), /*#__PURE__*/React.createElement("option", {
+    value: "description"
+  }, "description"), /*#__PURE__*/React.createElement("option", {
+    value: "article"
+  }, "article")), /*#__PURE__*/React.createElement("label", {
+    for: "inlineFormValue"
+  }, " for "), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    class: "form-control my-1 mx-2",
+    id: "inlineFormValue",
+    placeholder: "words",
+    required: true
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    class: "btn btn-primary my-1 mx-2",
+    onClick: submitHandler
+  }, "Submit")), /*#__PURE__*/React.createElement("div", {
     id: "skill-list",
     class: "d-flex flex-wrap justify-content-center border border-dark",
     onClick: clickHandler
-  }, skillCardList.length > 1 ? skillCardList : /*#__PURE__*/React.createElement("p", null, "Loading list...")));
+  }, skillCardList.length >= 1 ? skillCardList : /*#__PURE__*/React.createElement("p", null, "Loading list...")));
 }
 
 class Main extends React.Component {

@@ -176,18 +176,8 @@ section {
 
 /* skill list specific settings */
 
-.card-header > svg {
-  cursor: pointer;
-}
-
-.card-header > svg > path {
-  pointer-events: none;
-}
-
-.card-body > p {
-  display: none;
-}
-
-.card-body > .show {
-  display: block;
-}
+.card-header { background-color: lightcyan;}
+.card-header > svg  { cursor: pointer; }
+.card-header > svg > path { pointer-events: none; }
+.card-body > p      { display: none; }
+.card-body > .show  { display: block; }

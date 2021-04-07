@@ -196,6 +196,8 @@ function SkillsView ({}) {
   const [skillCardList, setSkillCardList] = React.useState([]);
 
   // only handles clicking on a card's svg element
+  // clicking on a skill's book icon will hide the description, show the article, and fill in the icon
+  // clicking on it again will reverse this
   const clickHandler = ( event ) => {
     if ( event.target.nodeName === "svg" ){
       const clickedSkill   = event.target.dataset.skill;
@@ -207,6 +209,21 @@ function SkillsView ({}) {
       clickedArticle.classList.toggle('show');
       clickedFill.value = clickedFill.value==="none"?"currentColor":"none";
     }
+  }
+
+  // Handle submitting the search / filter parameters
+  // Clear the skillCardList, emptying the displayed list and showing the loading message while the
+  // fetch is being performed. Also clear the search fields.
+  const submitHandler = ( event ) => {
+    event.preventDefault();
+    const searchTypeField  = document.getElementById('inlineFormType');
+    const searchValueField = document.getElementById('inlineFormValue');
+    const searchObj = { type: searchTypeField.value, value: searchValueField.value};
+
+    searchTypeField.value  = 'name';
+    searchValueField.value = '';
+    setSkillCardList([<p>Loading list...</p>]);
+    getSkills( searchObj );  
   }
 
   // returns a JSX div containing a bootstrap card with the skill information in it
@@ -243,20 +260,42 @@ function SkillsView ({}) {
     )
 
   }
+
+  // Fetch the skills from the db
+  // If the search function was used, format the fields into a query to append to the api path.
+  // If no search was specified, the 'query' param will be empty and all listed skills will be retrieved.
+  // Once the data is received, update the skillCardList state, which will cause a re-render.
+  const getSkills = ( query ) => {
+    let queryFull = '';
+    if ( query ) {
+      queryFull = `?type=${query.type}&value=${query.value}`
+    }
+    try {
+      let skillFetchResults = fetch(`/api${queryFull}`)
+        .then( response => response.json() )
+        .then( responseJSON => {
+          const body = responseJSON;
+          let fullCardList = [];
+          for ( let skill of body ){
+            fullCardList.push( skillCard( skill ) );
+          }
+          if ( fullCardList.length === 0 ) {
+            setSkillCardList([<p>No skills match your search criteria.</p>]);
+          }
+          else {
+            setSkillCardList(fullCardList);
+          }
+        });
+    }
+    catch {
+      console.log('There was an issue during skill retrieval.');
+    }
+  }
   
-  let skillFetchResults = {};
+  // Check to see if the skillCardList is empty, which would be on the initial render.
+  // If this is the initial render, get all the skills to display.
   if (skillCardList.length === 0) {
-    skillFetchResults = fetch('../public/skills.json')
-      .then( response => response.json() )
-      .then( responseJSON => {
-        console.log(responseJSON)
-        const body = responseJSON;
-        let fullCardList = [];
-        for ( let skill of body ){
-          fullCardList.push(skillCard( skill ));
-        }
-        setSkillCardList(fullCardList);
-      });
+    getSkills();
   }
 
   return (
@@ -273,12 +312,26 @@ function SkillsView ({}) {
         </p>
       </article>
       <h4>Skill List</h4>
+      <form class="form-inline">
+
+        <label for="inlineFormType">Search skills in their </label>
+        <select class="form-control my-1 mx-2" id="inlineFormType">
+          <option selected value="name">name</option>
+          <option value="description">description</option>
+          <option value="article">article</option>
+        </select>
+              
+        <label for="inlineFormValue"> for </label>
+        <input type="text" class="form-control my-1 mx-2" id="inlineFormValue" placeholder="words" required/>
+
+        <button type="submit" class="btn btn-primary my-1 mx-2" onClick={submitHandler}>Submit</button>
+      </form>
       <div
         id="skill-list"
         class="d-flex flex-wrap justify-content-center border border-dark"
         onClick={clickHandler}
       >
-        {skillCardList.length > 1?
+        {skillCardList.length >= 1?
           skillCardList:
           <p>Loading list...</p>
         }

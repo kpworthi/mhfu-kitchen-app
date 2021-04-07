@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const helmet     = require('helmet');
 const app        = express();
 const server     = require('http').createServer(app);
+const dbRoutes   = require('./routes/dbRoutes.js');
 
 const currentTimeEST = () => new Date().toLocaleString();
 
@@ -24,6 +25,8 @@ app.use(function (req, res, next){
 
 // public folder
 app.use('/public', express.static(process.cwd() + '/public'));
+
+app.use('/api', dbRoutes);
 
 // index page
 app.route('/')
