@@ -1,5 +1,4 @@
 import allIngredients from "../public/allIngredients.js";
-import recipes from "../public/recipes.js";
 import NavBar from "./navbar.js";
 
 const Ingredients = ({
@@ -25,22 +24,55 @@ const Recipes = ({
   ingredients,
   chefs
 }) => {
-  const currentRecipes = recipes[{
-    1: "oneChef",
-    2: "twoChef",
-    3: "threeChef",
-    4: "fourChef",
-    5: "fiveChef"
-  }[chefs]]; // find recipes that match the currently selected ingredients
+  // Set state for the current recipe list, and a variable to track what
+  // recipe list is currently loaded ( the "level" ).
+  // This solution -is- less optimal as data could be stored with the client
+  // so that repeated clicks around the selector don't end up querying for
+  // data the client should already have. Future implementation could instead 
+  // include dynamically building an object containing each level of recipe 
+  // list, only querying when a given level is not yet in the object.
+  const [currentRecipes, setCurrentRecipes] = React.useState([]);
+  const [currentRecipeLevel, setCurrentRecipeLevel] = React.useState([]);
+  let validRecipes = []; // Fetch the recipes from the db
 
-  let validRecipes = [];
-  currentRecipes.forEach(recipe => {
-    if (recipe[0] === recipe[1] && ingredients[recipe[0]].length >= 2) {
-      validRecipes.push(recipe.slice(0));
-    } else if (recipe[0] !== recipe[1] && ingredients[recipe[0]].length >= 1 && ingredients[recipe[1]].length >= 1) {
-      validRecipes.push(recipe.slice(0));
+  const getRecipes = chefNumber => {
+    try {
+      let recipeFetchResults = fetch(`/api/recipes?chefs=${chefNumber}`).then(response => response.json()).then(responseJSON => {
+        const body = responseJSON;
+        let recipeList = [];
+
+        for (let recipe of body) {
+          recipeList.push(recipe);
+        }
+
+        if (recipeList.length === 0) {
+          console.log('No recipes were returned..?');
+        } else {
+          setCurrentRecipes(recipeList);
+        }
+      });
+    } catch {
+      console.log('There was an issue during the recipe retrieval request.');
     }
-  });
+  }; // If this is the first render, or if the number of chefs has changed,
+  // get the correct list of recipes and set the new chef number as the
+  // current recipe "level".
+
+
+  if (chefs !== currentRecipeLevel) {
+    getRecipes(chefs);
+    setCurrentRecipeLevel(chefs);
+  } else {
+    // find recipes that match the currently selected ingredients
+    currentRecipes.forEach(recipe => {
+      if (recipe[0] === recipe[1] && ingredients[recipe[0]].length >= 2) {
+        validRecipes.push(recipe.slice(0));
+      } else if (recipe[0] !== recipe[1] && ingredients[recipe[0]].length >= 1 && ingredients[recipe[1]].length >= 1) {
+        validRecipes.push(recipe.slice(0));
+      }
+    });
+  }
+
   if (validRecipes.length === 0) validRecipes = /*#__PURE__*/React.createElement("p", {
     class: "col-xl-4"
   }, "No valid recipes!");else {
@@ -81,7 +113,7 @@ function RecipesView() {
   const [currentIngredients, setCurrentIngredients] = React.useState(emptyIngredientList());
 
   const chefSelectHandler = event => {
-    // when choosing new chef count, change active button and empty ingredients list
+    // When choosing new chef count, change active button and empty ingredients list.
     if (event.target.nodeName === "BUTTON" && Number(event.target.textContent[0]) !== currentChefs) {
       document.querySelector(".active").classList.remove("active");
       event.target.classList.add("active"); // next, uncheck all boxes, and empty ingredients list
@@ -89,8 +121,8 @@ function RecipesView() {
       document.querySelectorAll(":checked").forEach(checkbox => {
         checkbox.checked = false;
       });
-      setCurrentChefs(Number(event.target.textContent[0]));
       setCurrentIngredients(emptyIngredientList());
+      setCurrentChefs(Number(event.target.textContent[0]));
     }
   };
 
@@ -256,7 +288,7 @@ function SkillsView({}) {
     }
 
     try {
-      let skillFetchResults = fetch(`/api${queryFull}`).then(response => response.json()).then(responseJSON => {
+      let skillFetchResults = fetch(`/api/skills${queryFull}`).then(response => response.json()).then(responseJSON => {
         const body = responseJSON;
         let fullCardList = [];
 

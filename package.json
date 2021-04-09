@@ -1,6 +1,6 @@
 {
   "name": "mhfu-kitchen-helper",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "KPWorthi personal project, MHFU Felyne Kitchen Helper",
   "main": "server.js",
   "scripts": {
